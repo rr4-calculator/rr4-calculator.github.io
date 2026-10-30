@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Калькулятор подмотки</title>
+<meta name="description" content="Подбор скорости подмотки в игре: выберите катушку, на которой ловите, и любую другую из 425 катушек.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Калькулятор подмотки</h1>
+  <p>Ловите на одной катушке и хотите так же вести приманку на другой? Выберите обе и скорость, на которой ловите, и калькулятор подскажет скорость для второй катушки (1–50).</p>
+</header>
+
+<section aria-labelledby="calcTitle">
+  <h2 id="calcTitle" hidden>Расчёт</h2>
+  <div class="calc">
+    <div class="side from">
+      <span class="lbl">Ловлю на</span>
+      <input id="fromIn" list="catList" autocomplete="off" aria-label="Катушка, на которой ловлю" placeholder="Название катушки">
+      <span class="meta" id="fromMeta"></span>
+      <div class="own" id="fromOwn" hidden></div>
+      <div class="speedrow">
+        <label for="fromSpeed" class="meta">Скорость</label>
+        <input id="fromSpeedRange" type="range" min="1" max="50" step="1" aria-label="Скорость, ползунок">
+        <input id="fromSpeed" class="n" type="number" min="1" max="50" step="1" placeholder="1–50">
+      </div>
+      <span class="flow" id="fromFlow"></span>
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="side to">
+      <span class="lbl">Хочу так же на</span>
+      <input id="toIn" list="catList" autocomplete="off" aria-label="Катушка, для которой подобрать скорость" placeholder="Название катушки">
+      <span class="meta" id="toMeta"></span>
+      <div class="own" id="toOwn" hidden></div>
+      <div class="result" id="toResult"></div>
+      <span class="flow" id="toFlow"></span>
+    </div>
+  </div>
+  <datalist id="catList"></datalist>
+</section>
+
+<section aria-labelledby="allTitle">
+  <h2 id="allTitle">Все катушки</h2>
+  <p class="hint">Скорость в таблице появится, когда вы выберете катушку и скорость в блоке «Ловлю на». Нажмите на строку, чтобы выбрать катушку справа.</p>
+  <div class="filters">
+    <div class="field grow"><label for="q">Поиск</label><input id="q" type="search" placeholder="Например, Venga или 6000" autocomplete="off"></div>
+    <div class="field"><label for="secSel">Тип и размер</label><select id="secSel"></select></div>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Катушка</th><th class="num">Передат.</th><th class="num">м / оборот</th><th class="num">Скорость</th><th class="num">м/мин</th></tr></thead>
+    <tbody id="allBody"></tbody>
+  </table></div>
+</section>
+
+<section aria-labelledby="howTitle">
+  <h2 id="howTitle">Как это считается</h2>
+  <p class="hint">У каждой катушки есть подмотка за оборот ручки (в таблице игры колонка «СКОР.»). Скорость в игре задаёт, сколько раз в минуту крутится ручка, одинаково для всех катушек. Калькулятор находит скорость, при которой вторая катушка сматывает столько же метров в минуту, сколько первая.</p>
+  <p class="hint">Если у катушки нет подмотки в таблице, впишите свой замер: смотайте 30 м и посчитайте обороты ручки. Замер сохранится в вашем браузере.</p>
+  <details>
+    <summary>Шкала скорости игры</summary>
+    <div class="cal">
+      <div class="field">
+        <label for="calR">Подмотка катушки, на которой мерили (м / оборот)</label>
+        <input id="calR" class="n" type="number" step="any" min="0" style="width:7em">
+        <label for="calPts" style="margin-top:8px">Замеры: «скорость — м/мин», по одному в строке</label>
+        <textarea id="calPts" spellcheck="false"></textarea>
+        <button type="button" id="calReset" style="align-self:flex-start;margin-top:6px">Вернуть исходную шкалу</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+        <div class="formula" id="calFormula"></div>
+        <div class="tbl" style="max-height:none"><table>
+          <thead><tr><th class="num">Скорость</th><th class="num">Оборотов в минуту</th></tr></thead>
+          <tbody id="rpmBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<footer>
+  <span>Данные катушек: таблица «КАТУШКИ Potryasov Game», обновление от 22.05.2026 — <a href="https://docs.google.com/spreadsheets/d/1S0OIBsu4vMip8rZnt5sstnaqgfn4pqLv53O8aa_YByI/edit?gid=1179924116" target="_blank" rel="noopener">открыть таблицу</a>.</span>
+  <span>Подмотка Electro Raptor 20 и всех его версий (0,607 м) и шкала скорости — замеры игрока.</span>
+</footer>
+</div>
+<script src="reels.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
