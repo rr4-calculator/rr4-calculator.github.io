@@ -57,31 +57,6 @@
     <tbody id="allBody"></tbody>
   </table></div>
 </section>
-
-<section aria-labelledby="howTitle">
-  <h2 id="howTitle">Как это считается</h2>
-  <p class="hint">У каждой катушки есть подмотка за оборот ручки (в таблице игры колонка «СКОР.»). Скорость в игре задаёт, сколько раз в минуту крутится ручка, одинаково для всех катушек. Калькулятор находит скорость, при которой вторая катушка сматывает столько же метров в минуту, сколько первая.</p>
-  <p class="hint">Если у катушки нет подмотки в таблице, впишите свой замер: смотайте 30 м и посчитайте обороты ручки. Замер сохранится в вашем браузере.</p>
-  <details>
-    <summary>Шкала скорости игры</summary>
-    <div class="cal">
-      <div class="field">
-        <label for="calR">Подмотка катушки, на которой мерили (м / оборот)</label>
-        <input id="calR" class="n" type="number" step="any" min="0" style="width:7em">
-        <label for="calPts" style="margin-top:8px">Замеры: «скорость — м/мин», по одному в строке</label>
-        <textarea id="calPts" spellcheck="false"></textarea>
-        <button type="button" id="calReset" style="align-self:flex-start;margin-top:6px">Вернуть исходную шкалу</button>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
-        <div class="formula" id="calFormula"></div>
-        <div class="tbl" style="max-height:none"><table>
-          <thead><tr><th class="num">Скорость</th><th class="num">Оборотов в минуту</th></tr></thead>
-          <tbody id="rpmBody"></tbody>
-        </table></div>
-      </div>
-    </div>
-  </details>
-</section>
 </div>
 <script src="reels.js"></script>
 <script src="app.js"></script>
