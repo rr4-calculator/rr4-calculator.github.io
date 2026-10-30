@@ -11,8 +11,8 @@ const byName=new Map(CAT.map(c=>[c.name.toLowerCase(),c]));
 const DEF_CAL={r:0.607,pts:"1 - 9\n2 - 10\n3 - 11\n4 - 12\n5 - 13\n7 - 15\n25 - 34\n30 - 39\n35 - 44\n50 - 60"};
 const KEY="reel-calc-public-v1";
 let S={from:"",to:"",speed:"",own:{},calR:DEF_CAL.r,calPts:DEF_CAL.pts,q:"",sec:""};
-try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==="object"){if(s.own&&typeof s.own==="object")S.own=s.own;if(s.calR>0)S.calR=s.calR;if(typeof s.calPts==="string")S.calPts=s.calPts}}catch(e){}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({own:S.own,calR:S.calR,calPts:S.calPts}))}catch(e){}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==="object"){if(s.own&&typeof s.own==="object")S.own=s.own}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({own:S.own}))}catch(e){}};
 const $=id=>document.getElementById(id);
 const fmt=(x,d=2)=>Number.isFinite(x)?x.toLocaleString("ru-RU",{minimumFractionDigits:d,maximumFractionDigits:d}):"—";
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -87,14 +87,9 @@ function renderTable(){
   $("count").textContent=`${rows.length} шт.`;
 }
 
-function renderCal(){
-  const f=fit();
-  $("calFormula").innerHTML=f?`обороты/мин ≈ ${fmt(f.A,1)} + ${fmt(f.B,2)} × скорость<br><span class="meta">по ${f.n} замерам</span>`:`<span class="note">Нужно минимум два замера и подмотка больше нуля</span>`;
-  $("rpmBody").innerHTML=f?[1,2,5,10,20,30,40,50].map(s=>`<tr><td class="num">${s}</td><td class="num">${fmt(f.A+f.B*s,1)}</td></tr>`).join(""):"";
-}
-function renderAll(){renderCalc();renderTable();renderCal()}
+function renderAll(){renderCalc();renderTable()}
 
-$("fromIn").value=S.from;$("toIn").value=S.to;$("q").value=S.q||"";$("secSel").value=S.sec||"";$("calR").value=S.calR;$("calPts").value=S.calPts;
+$("fromIn").value=S.from;$("toIn").value=S.to;$("q").value=S.q||"";$("secSel").value=S.sec||"";
 $("fromIn").addEventListener("input",e=>{S.from=e.target.value;renderCalc();if(find(S.from))renderTable()});
 $("toIn").addEventListener("input",e=>{S.to=e.target.value;renderCalc();if(find(S.to))renderTable()});
 const setSpeed=v=>{S.speed=v===""?"":Math.min(50,Math.max(1,Math.round(+v)||1));renderCalc();renderTable()};
@@ -103,9 +98,6 @@ $("fromSpeed").addEventListener("change",e=>{setSpeed(e.target.value);e.target.v
 $("fromSpeedRange").addEventListener("input",e=>setSpeed(e.target.value));
 $("q").addEventListener("input",e=>{S.q=e.target.value;renderTable()});
 $("secSel").addEventListener("change",e=>{S.sec=e.target.value;renderTable()});
-$("calR").addEventListener("input",e=>{S.calR=+e.target.value;save();renderAll()});
-$("calPts").addEventListener("input",e=>{S.calPts=e.target.value;save();renderAll()});
-$("calReset").addEventListener("click",()=>{S.calR=DEF_CAL.r;S.calPts=DEF_CAL.pts;$("calR").value=S.calR;$("calPts").value=S.calPts;save();renderAll()});
 document.querySelector(".calc").addEventListener("click",e=>{
   const side=e.target.dataset.own||e.target.dataset.clear;if(!side)return;
   const c=find(side==="from"?S.from:S.to);if(!c)return;
